@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TRAQUA — Smart Hydration</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #FFF9F0;
+            --surface: #f0e8dc;
+            --card: #ffffff;
+            --accent: #6377BD;
+            --accent2: #4a5fa8;
+            --accent-dim: rgba(99,119,189,0.08);
+            --accent-glow: rgba(99,119,189,0.25);
+            --text: #2a2a3a;
+            --text-dim: #7a7a95;
+            --light-blue: #D0E3FF;
+            --cream: #FFF9F0;
+            --gradient: linear-gradient(135deg, #6377BD 0%, #8fa0d6 50%, #D0E3FF 100%);
+            --radius: 16px;
+        }
+
+        * { margin:0; padding:0; box-sizing:border-box; }
+        html { scroll-behavior:smooth; font-size:16px; }
+        body { font-family:'Outfit',sans-serif; background:var(--bg); color:var(--text); overflow-x:hidden; }
+
+        ::-webkit-scrollbar { width:6px; }
+        ::-webkit-scrollbar-track { background:var(--bg); }
+        ::-webkit-scrollbar-thumb { background:var(--accent); border-radius:3px; }
+
+        /* NAV */
+        nav {
+            position:fixed; top:0; left:0; right:0; z-index:1000;
+            display:flex; align-items:center; justify-content:space-between;
+            padding:1rem 2.5rem;
+            background:rgba(255,249,240,0.85);
+            backdrop-filter:blur(20px);
+            border-bottom:1px solid rgba(99,119,189,0.12);
+        }
+        .logo { font-weight:800; font-size:1.4rem; letter-spacing:0.15em; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .nav-links { display:flex; gap:2rem; list-style:none; }
+        .nav-links a { color:var(--text-dim); text-decoration:none; font-size:0.85rem; letter-spacing:0.05em; font-weight:500; transition:color .3s; }
+        .nav-links a:hover { color:var(--accent); }
+        .nav-cta {
+            background:var(--accent); color:#ffffff; border:none; padding:0.6rem 1.5rem;
+            border-radius:100px; font-family:inherit; font-weight:700; font-size:0.8rem;
+            letter-spacing:0.08em; cursor:pointer; transition:transform .2s, box-shadow .2s;
+        }
+        .nav-cta:hover { transform:scale(1.05); box-shadow:0 0 30px var(--accent-glow); }
+
+        /* HERO */
+        .hero {
+            min-height:100vh; display:flex; align-items:center; justify-content:center;
+            position:relative; padding:6rem 2rem 4rem; overflow:hidden;
+        }
+        .hero-glow {
+            position:absolute; width:600px; height:600px; border-radius:50%;
+            background:radial-gradient(circle, rgba(208,227,255,0.4) 0%, transparent 70%);
+            top:50%; left:50%; transform:translate(-50%,-50%);
+            animation:pulse-glow 4s ease-in-out infinite;
+        }
+        .hero-glow2 {
+            position:absolute; width:500px; height:500px; border-radius:50%;
+            background:radial-gradient(circle, rgba(99,119,189,0.12) 0%, transparent 70%);
+            top:40%; left:60%; transform:translate(-50%,-50%);
+            animation:pulse-glow 5s ease-in-out infinite 1s;
+        }
+        @keyframes pulse-glow {
+            0%,100% { transform:translate(-50%,-50%) scale(1); opacity:0.6; }
+            50% { transform:translate(-50%,-50%) scale(1.15); opacity:1; }
+        }
+        .hero-content { text-align:center; position:relative; z-index:2; max-width:800px; }
+        .hero-tag {
+            display:inline-flex; align-items:center; gap:0.5rem;
+            background:var(--accent-dim); border:1px solid rgba(99,119,189,0.2);
+            border-radius:100px; padding:0.4rem 1.2rem; font-size:0.75rem;
+            font-weight:600; letter-spacing:0.1em; color:var(--accent); margin-bottom:2rem;
+        }
+        .hero-tag .dot { width:6px; height:6px; border-radius:50%; background:var(--accent); animation:blink 2s infinite; }
+        @keyframes blink { 0%,100%{opacity:1;} 50%{opacity:0.3;} }
+        .hero h1 { font-size:clamp(3rem,8vw,6rem); font-weight:900; letter-spacing:-0.03em; line-height:1.05; margin-bottom:1.5rem; }
+        .hero h1 .gt { background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; }
+        .hero p { font-size:1.15rem; color:var(--text-dim); max-width:550px; margin:0 auto 2.5rem; line-height:1.7; font-weight:300; }
+        .hero-btns { display:flex; gap:1rem; justify-content:center; flex-wrap:wrap; }
+        .btn-primary {
+            background:var(--accent); color:#ffffff; border:none; padding:0.9rem 2.2rem;
+            border-radius:100px; font-family:inherit; font-weight:700; font-size:0.9rem;
+            letter-spacing:0.05em; cursor:pointer; transition:all .3s;
+        }
+        .btn-primary:hover { transform:translateY(-2px); box-shadow:0 8px 40px var(--accent-glow); }
+        .btn-secondary {
+            background:transparent; color:var(--accent); border:1px solid rgba(99,119,189,0.3);
+            padding:0.9rem 2.2rem; border-radius:100px; font-family:inherit; font-weight:500;
+            font-size:0.9rem; cursor:pointer; transition:all .3s;
+        }
+        .btn-secondary:hover { border-color:var(--accent); color:var(--accent); }
+
+        /* BOTTLE SVG */
+        .bottle-showcase { margin:3rem auto 0; width:220px; height:380px; position:relative; animation:float 6s ease-in-out infinite; }
+        @keyframes float { 0%,100%{ transform:translateY(0); } 50%{ transform:translateY(-15px); } }
+        .bottle-glow-ring {
+            position:absolute; bottom:-20px; left:50%; transform:translateX(-50%);
+            width:160px; height:20px; border-radius:50%;
+            background:radial-gradient(ellipse, var(--accent-glow), transparent);
+            filter:blur(10px); animation:pulse-glow 4s ease-in-out infinite;
+        }
+
+        /* STATS BAR */
+        .stats-bar {
+            display:flex; justify-content:center; gap:3rem; padding:3rem 2rem; flex-wrap:wrap;
+            border-top:1px solid rgba(99,119,189,0.1); border-bottom:1px solid rgba(99,119,189,0.1);
+            background:var(--light-blue);
+        }
+        .stat-item { text-align:center; }
+        .stat-num { font-size:2.2rem; font-weight:800; color:var(--accent); }
+        .stat-label { font-size:0.7rem; color:var(--text-dim); letter-spacing:0.15em; margin-top:0.3rem; font-weight:600; }
+
+        /* SECTIONS */
+        section { padding:6rem 2rem; }
+        .section-header { text-align:center; margin-bottom:4rem; }
+        .section-tag { font-size:0.7rem; font-weight:700; letter-spacing:0.2em; color:var(--accent); margin-bottom:0.8rem; }
+        .section-title { font-size:clamp(2rem,4vw,3rem); font-weight:800; letter-spacing:-0.02em; }
+        .section-sub { color:var(--text-dim); font-size:1rem; max-width:500px; margin:1rem auto 0; line-height:1.7; font-weight:300; }
+
+        /* FEATURES */
+        .features-grid { display:grid; grid-template-columns:repeat(auto-fit, minmax(280px,1fr)); gap:1.5rem; max-width:1100px; margin:0 auto; }
+        .feature-card {
+            background:var(--card); border:1px solid rgba(255,255,255,0.04);
+            border-radius:var(--radius); padding:2rem; transition:all .4s; position:relative; overflow:hidden;
+        }
+        .feature-card:hover { border-color:rgba(0,228,184,0.2); transform:translateY(-4px); box-shadow:0 20px 60px rgba(0,0,0,0.3); }
+        .feature-card::before { content:''; position:absolute; top:0; left:0; right:0; height:2px; background:var(--gradient); opacity:0; transition:opacity .4s; }
+        .feature-card:hover::before { opacity:1; }
+        .feature-icon {
+            width:48px; height:48px; border-radius:12px; display:flex; align-items:center; justify-content:center;
+            font-size:1.4rem; background:var(--accent-dim); margin-bottom:1.2rem;
+        }
+        .feature-card h3 { font-size:1.1rem; font-weight:700; margin-bottom:0.6rem; }
+        .feature-card p { font-size:0.85rem; color:var(--text-dim); line-height:1.7; font-weight:300; }
+
+        /* HOW IT WORKS */
+        .steps { max-width:800px; margin:0 auto; position:relative; }
+        .steps::before { content:''; position:absolute; left:24px; top:0; bottom:0; width:2px; background:linear-gradient(to bottom, var(--accent), var(--accent2), transparent); }
+        .step { display:flex; gap:2rem; align-items:flex-start; margin-bottom:3rem; position:relative; }
+        .step-num {
+            flex-shrink:0; width:50px; height:50px; border-radius:50%; background:var(--card);
+            border:2px solid var(--accent); display:flex; align-items:center; justify-content:center;
+            font-weight:800; font-size:1rem; color:var(--accent); position:relative; z-index:2;
+        }
+        .step-content h3 { font-size:1.1rem; font-weight:700; margin-bottom:0.4rem; }
+        .step-content p { font-size:0.88rem; color:var(--text-dim); line-height:1.7; font-weight:300; }
+
+        /* SPECS */
+        .specs-table { max-width:700px; margin:0 auto; border-radius:var(--radius); overflow:hidden; border:1px solid rgba(255,255,255,0.04); }
+        .spec-row { display:flex; justify-content:space-between; align-items:center; padding:1.1rem 1.8rem; border-bottom:1px solid rgba(255,255,255,0.04); transition:background .3s; }
+        .spec-row:last-child { border-bottom:none; }
+        .spec-row:nth-child(odd) { background:var(--card); }
+        .spec-row:nth-child(even) { background:var(--surface); }
+        .spec-row:hover { background:rgba(0,228,184,0.04); }
+        .spec-key { font-weight:600; font-size:0.88rem; }
+        .spec-val { color:var(--accent); font-weight:500; font-size:0.88rem; text-align:right; }
+
+        /* APP SECTION */
+        .app-section { background:var(--surface); border-top:1px solid rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.04); }
+        .app-grid { display:grid; grid-template-columns:1fr 1fr; gap:4rem; max-width:1000px; margin:0 auto; align-items:center; }
+        .phone-mock {
+            width:260px; height:500px; background:var(--card); border-radius:32px;
+            border:3px solid rgba(255,255,255,0.08); margin:0 auto; padding:1.5rem;
+            position:relative; overflow:hidden; box-shadow:0 30px 80px rgba(0,0,0,0.4);
+        }
+        .phone-notch { width:100px; height:22px; background:var(--bg); border-radius:0 0 14px 14px; margin:-1.5rem auto 1.2rem; }
+        .phone-app-title { text-align:center; font-weight:800; font-size:0.9rem; letter-spacing:0.12em; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:1.5rem; }
+        .hydration-ring-container { text-align:center; margin-bottom:1.5rem; position:relative; }
+        .hydration-ring-container svg { width:140px; height:140px; transform:rotate(-90deg); }
+        .ring-bg { fill:none; stroke:rgba(255,255,255,0.06); stroke-width:6; }
+        .ring-fill { fill:none; stroke:url(#phoneGrad); stroke-width:6; stroke-linecap:round; stroke-dasharray:283; stroke-dashoffset:70; transition:stroke-dashoffset 2s ease; }
+        .ring-label { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-weight:800; font-size:1.6rem; }
+        .ring-label span { display:block; font-size:0.55rem; color:var(--text-dim); font-weight:500; letter-spacing:0.1em; }
+        .phone-stats { display:flex; flex-direction:column; gap:0.5rem; }
+        .phone-stat { display:flex; justify-content:space-between; align-items:center; padding:0.5rem 0.7rem; background:rgba(255,255,255,0.03); border-radius:8px; font-size:0.72rem; }
+        .phone-stat-key { color:var(--text-dim); font-weight:600; letter-spacing:0.08em; }
+        .phone-stat-val { color:var(--accent); font-weight:700; }
+        .phone-btn { display:block; width:100%; margin-top:1rem; padding:0.6rem; background:var(--gradient); border:none; border-radius:100px; font-family:inherit; font-weight:700; font-size:0.72rem; color:#060b12; letter-spacing:0.08em; cursor:pointer; }
+        .app-features h3 { font-size:1.5rem; font-weight:700; margin-bottom:1.5rem; }
+        .app-feat-item { display:flex; gap:1rem; align-items:flex-start; margin-bottom:1.5rem; }
+        .app-feat-icon { width:36px; height:36px; border-radius:10px; background:var(--accent-dim); display:flex; align-items:center; justify-content:center; flex-shrink:0; font-size:1rem; }
+        .app-feat-item h4 { font-size:0.9rem; font-weight:600; margin-bottom:0.2rem; }
+        .app-feat-item p { font-size:0.8rem; color:var(--text-dim); line-height:1.6; font-weight:300; }
+
+        /* CTA */
+        .cta-section { text-align:center; padding:8rem 2rem; position:relative; overflow:hidden; }
+        .cta-bg { position:absolute; inset:0; background:radial-gradient(ellipse at center, rgba(0,228,184,0.06) 0%, transparent 60%); }
+        .cta-section h2 { font-size:clamp(2rem,5vw,3.5rem); font-weight:900; margin-bottom:1rem; position:relative; z-index:2; }
+        .cta-section p { color:var(--text-dim); font-size:1rem; max-width:450px; margin:0 auto 2.5rem; line-height:1.7; font-weight:300; position:relative; z-index:2; }
+
+        /* FOOTER */
+        footer { padding:3rem 2rem; text-align:center; border-top:1px solid rgba(255,255,255,0.04); }
+        .footer-logo { font-weight:800; font-size:1.2rem; letter-spacing:0.15em; background:var(--gradient); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin-bottom:0.5rem; }
+        footer p { color:var(--text-dim); font-size:0.7rem; letter-spacing:0.05em; }
+        .footer-links { display:flex; gap:1.5rem; justify-content:center; margin:1rem 0; }
+        .footer-links a { color:var(--text-dim); text-decoration:none; font-size:0.75rem; transition:color .3s; }
+        .footer-links a:hover { color:var(--accent); }
+
+        /* ANIMATIONS */
+        .fade-up { opacity:0; transform:translateY(30px); transition:opacity .7s, transform .7s; }
+        .fade-up.visible { opacity:1; transform:translateY(0); }
+
+        @media (max-width:768px) {
+            nav { padding:1rem 1.2rem; }
+            .nav-links { display:none; }
+            .stats-bar { gap:2rem; }
+            .app-grid { grid-template-columns:1fr; text-align:center; }
+            .app-features { order:-1; }
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <div class="logo">TRAQUA</div>
+    <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#specs">Specs</a></li>
+        <li><a href="#app">App</a></li>
+    </ul>
+    <button class="nav-cta">PRE-ORDER</button>
+</nav>
+
+<section class="hero">
+    <div class="hero-glow"></div>
+    <div class="hero-glow2"></div>
+    <div class="hero-content">
+        <div class="hero-tag"><span class="dot"></span>SMART HYDRATION TECHNOLOGY</div>
+        <h1>Drink <span class="gt">Smarter.</span><br>Live Better.</h1>
+        <p>TRAQUA combines activated carbon filtration, UV-C purification, and intelligent hydration tracking in one beautifully engineered bottle.</p>
+        <div class="hero-btns">
+            <button class="btn-primary">Pre-Order Now</button>
+            <button class="btn-secondary">Watch Video</button>
+        </div>
+        <div class="bottle-showcase">
+            <svg viewBox="0 0 200 380" xmlns="http://www.w3.org/2000/svg">
+                <defs>
+                    <linearGradient id="bottleGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#1a2a3f"/>
+                        <stop offset="50%" stop-color="#0f1c2e"/>
+                        <stop offset="100%" stop-color="#0a1220"/>
+                    </linearGradient>
+                    <linearGradient id="waterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#00e4b8" stop-opacity="0.3"/>
+                        <stop offset="100%" stop-color="#0088ff" stop-opacity="0.15"/>
+                    </linearGradient>
+                    <linearGradient id="capGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+                        <stop offset="0%" stop-color="#2a3f55"/>
+                        <stop offset="100%" stop-color="#1a2a3f"/>
+                    </linearGradient>
+                    <linearGradient id="ringAccent" x1="0%" y1="0%" x2="100%" y2="0%">
+                        <stop offset="0%" stop-color="#00e4b8"/>
+                        <stop offset="100%" stop-color="#0088ff"/>
+                    </linearGradient>
+                    <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+                </defs>
+                <rect x="72" y="10" width="56" height="50" rx="8" fill="url(#capGrad)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                <rect x="68" y="55" width="64" height="12" rx="4" fill="url(#capGrad)" stroke="rgba(255,255,255,0.08)" stroke-width="1"/>
+                <rect x="55" y="67" width="90" height="280" rx="18" fill="url(#bottleGrad)" stroke="rgba(255,255,255,0.06)" stroke-width="1.5"/>
+                <rect x="60" y="140" width="80" height="202" rx="15" fill="url(#waterGrad)">
+                    <animate attributeName="y" values="140;135;140" dur="4s" repeatCount="indefinite"/>
+                </rect>
+                <rect x="55" y="100" width="90" height="4" rx="2" fill="url(#ringAccent)" filter="url(#glow)">
+                    <animate attributeName="opacity" values="0.6;1;0.6" dur="3s" repeatCount="indefinite"/>
+                </rect>
+                <circle cx="75" cy="120" r="3" fill="#00e4b8" opacity="0.8"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite"/></circle>
+                <circle cx="88" cy="120" r="3" fill="#0088ff" opacity="0.8"><animate attributeName="opacity" values="0.4;1;0.4" dur="2.5s" repeatCount="indefinite" begin="0.5s"/></circle>
+                <circle cx="101" cy="120" r="3" fill="#00e4b8" opacity="0.8"><animate attributeName="opacity" values="0.4;1;0.4" dur="2s" repeatCount="indefinite" begin="1s"/></circle>
+                <text x="100" y="240" text-anchor="middle" font-family="Outfit" font-weight="800" font-size="14" letter-spacing="3" fill="rgba(255,255,255,0.15)">TRAQUA</text>
+                <rect x="65" y="340" width="70" height="8" rx="4" fill="rgba(255,255,255,0.04)"/>
+            </svg>
+            <div class="bottle-glow-ring"></div>
+        </div>
+    </div>
+</section>
+
+<div class="stats-bar">
+    <div class="stat-item"><div class="stat-num">99.9%</div><div class="stat-label">BACTERIA ELIMINATED</div></div>
+    <div class="stat-item"><div class="stat-num">500ml</div><div class="stat-label">& 750ML OPTIONS</div></div>
+    <div class="stat-item"><div class="stat-num">21 Day</div><div class="stat-label">BATTERY LIFE</div></div>
+    <div class="stat-item"><div class="stat-num">60s</div><div class="stat-label">UV-C PURIFICATION</div></div>
+</div>
+
+<section id="features">
+    <div class="section-header">
+        <div class="section-tag">FEATURES</div>
+        <div class="section-title">Engineered for<br>Pure Hydration</div>
+        <div class="section-sub">Every detail designed to deliver cleaner water and smarter tracking.</div>
+    </div>
+    <div class="features-grid">
+        <div class="feature-card fade-up">
+            <div class="feature-icon">🧬</div>
+            <h3>Activated Carbon Filtration</h3>
+            <p>Removes chlorine, odors, VOCs, and impurities from tap water. Replaceable cartridge lasts up to 300 litres.</p>
+        </div>
+        <div class="feature-card fade-up">
+            <div class="feature-icon">🔬</div>
+            <h3>UV-C LED Purification</h3>
+            <p>270–280nm UV-C LED kills 99.9% of bacteria and viruses in 60 seconds. No chemicals, no waste. Triggered via button or app.</p>
+        </div>
+        <div class="feature-card fade-up">
+            <div class="feature-icon">📊</div>
+            <h3>Smart Hydration Tracking</h3>
+            <p>Precision sensors track intake to the half-ounce. Syncs over Bluetooth to set and hit personalised daily goals.</p>
+        </div>
+        <div class="feature-card fade-up">
+            <div class="feature-icon">📱</div>
+            <h3>TRAQUA App</h3>
+            <p>AI-powered hydration goals based on your body type, local weather, altitude, and activity level. Real-time sync and smart reminders.</p>
+        </div>
+        <div class="feature-card fade-up">
+            <div class="feature-icon">💡</div>
+            <h3>Drink Glow Reminders</h3>
+            <p>The smart LED ring glows when it's time to hydrate. Customise colour, pattern, and frequency through the app.</p>
+        </div>
+        <div class="feature-card fade-up">
+            <div class="feature-icon">🌍</div>
+            <h3>Zero-Waste Design</h3>
+            <p>Built from recycled stainless steel. Track how many plastic bottles you've saved through TRAQUA's environmental dashboard.</p>
+        </div>
+    </div>
+</section>
+
+<section id="how" style="background:var(--surface); border-top:1px solid rgba(255,255,255,0.04); border-bottom:1px solid rgba(255,255,255,0.04);">
+    <div class="section-header">
+        <div class="section-tag">HOW IT WORKS</div>
+        <div class="section-title">Pure in 3 Steps</div>
+    </div>
+    <div class="steps">
+        <div class="step fade-up">
+            <div class="step-num">01</div>
+            <div class="step-content">
+                <h3>Fill With Any Tap Water</h3>
+                <p>The activated carbon filter immediately begins removing chlorine, odors, and common contaminants as you pour.</p>
+            </div>
+        </div>
+        <div class="step fade-up">
+            <div class="step-num">02</div>
+            <div class="step-content">
+                <h3>Press to Purify</h3>
+                <p>Tap the cap button or trigger UV-C purification from the app. The UV-C LED sterilises the full water volume in 60 seconds.</p>
+            </div>
+        </div>
+        <div class="step fade-up">
+            <div class="step-num">03</div>
+            <div class="step-content">
+                <h3>Drink & Track</h3>
+                <p>The bottle tracks every sip, syncs to your phone, and adjusts your hydration goal in real-time based on activity and weather.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section id="specs">
+    <div class="section-header">
+        <div class="section-tag">SPECIFICATIONS</div>
+        <div class="section-title">Built to Perform</div>
+    </div>
+    <div class="specs-table fade-up">
+        <div class="spec-row"><span class="spec-key">Capacity</span><span class="spec-val">500ml / 750ml</span></div>
+        <div class="spec-row"><span class="spec-key">Material</span><span class="spec-val">Recycled 18/8 Stainless Steel</span></div>
+        <div class="spec-row"><span class="spec-key">Insulation</span><span class="spec-val">24hr Cold · 12hr Hot</span></div>
+        <div class="spec-row"><span class="spec-key">Filtration</span><span class="spec-val">Activated Carbon + UV-C LED</span></div>
+        <div class="spec-row"><span class="spec-key">UV-C Wavelength</span><span class="spec-val">270–280nm</span></div>
+        <div class="spec-row"><span class="spec-key">Purification Time</span><span class="spec-val">60 seconds</span></div>
+        <div class="spec-row"><span class="spec-key">Filter Lifespan</span><span class="spec-val">~300 litres</span></div>
+        <div class="spec-row"><span class="spec-key">Battery</span><span class="spec-val">USB-C · 21-day life</span></div>
+        <div class="spec-row"><span class="spec-key">Connectivity</span><span class="spec-val">Bluetooth Low Energy 5.0</span></div>
+        <div class="spec-row"><span class="spec-key">Sensors</span><span class="spec-val">Flow · Temperature · TDS</span></div>
+        <div class="spec-row"><span class="spec-key">App Compatibility</span><span class="spec-val">iOS & Android</span></div>
+        <div class="spec-row"><span class="spec-key">Integrations</span><span class="spec-val">Apple Health · Fitbit · Garmin</span></div>
+        <div class="spec-row"><span class="spec-key">Weight</span><span class="spec-val">320g (500ml) · 380g (750ml)</span></div>
+    </div>
+</section>
+
+<section id="app" class="app-section">
+    <div class="section-header">
+        <div class="section-tag">THE APP</div>
+        <div class="section-title">Your Hydration<br>Command Centre</div>
+    </div>
+    <div class="app-grid">
+        <div class="phone-mock fade-up">
+            <div class="phone-notch"></div>
+            <div class="phone-app-title">TRAQUA</div>
+            <div class="hydration-ring-container">
+                <svg viewBox="0 0 100 100">
+                    <defs><linearGradient id="phoneGrad" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" stop-color="#00e4b8"/><stop offset="100%" stop-color="#0088ff"/></linearGradient></defs>
+                    <circle class="ring-bg" cx="50" cy="50" r="45"/>
+                    <circle class="ring-fill" cx="50" cy="50" r="45"/>
+                </svg>
+                <div class="ring-label">75%<span>OF DAILY GOAL</span></div>
+            </div>
+            <div class="phone-stats">
+                <div class="phone-stat"><span class="phone-stat-key">TODAY</span><span class="phone-stat-val">1.8L / 2.4L</span></div>
+                <div class="phone-stat"><span class="phone-stat-key">TDS</span><span class="phone-stat-val">12 ppm</span></div>
+                <div class="phone-stat"><span class="phone-stat-key">TEMP</span><span class="phone-stat-val">18°C</span></div>
+                <div class="phone-stat"><span class="phone-stat-key">STREAK</span><span class="phone-stat-val">14 days</span></div>
+                <div class="phone-stat"><span class="phone-stat-key">FILTER</span><span class="phone-stat-val">82% left</span></div>
+            </div>
+            <button class="phone-btn">DRINK NOW</button>
+        </div>
+        <div class="app-features fade-up">
+            <h3>Smart. Personal.<br>Always Adapting.</h3>
+            <div class="app-feat-item">
+                <div class="app-feat-icon">🎯</div>
+                <div><h4>AI Hydration Goals</h4><p>Personalised targets based on your body type, local weather, altitude, and activity level.</p></div>
+            </div>
+            <div class="app-feat-item">
+                <div class="app-feat-icon">🔔</div>
+                <div><h4>Smart Reminders</h4><p>Gentle nudges via app notifications and the bottle's LED ring when you fall behind.</p></div>
+            </div>
+            <div class="app-feat-item">
+                <div class="app-feat-icon">🔗</div>
+                <div><h4>Fitness Integration</h4><p>Syncs with Apple Health, Fitbit, Garmin, Nike+, and MyFitnessPal for full-picture wellness.</p></div>
+            </div>
+            <div class="app-feat-item">
+                <div class="app-feat-icon">📈</div>
+                <div><h4>Water Quality Monitor</h4><p>Live TDS readings and temperature data. Know exactly what you're drinking.</p></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="cta-section">
+    <div class="cta-bg"></div>
+    <div class="section-tag" style="position:relative;z-index:2;">JOIN THE WAITLIST</div>
+    <h2 style="position:relative;z-index:2;">Ready to Drink <span style="background:var(--gradient);-webkit-background-clip:text;-webkit-text-fill-color:transparent;">Smarter?</span></h2>
+    <p>Be the first to experience TRAQUA. Early supporters get exclusive pricing and priority shipping.</p>
+    <button class="btn-primary" style="position:relative;z-index:2;">Pre-Order — Coming Soon</button>
+</section>
+
+<footer>
+    <div class="footer-logo">TRAQUA</div>
+    <div class="footer-links">
+        <a href="#">Features</a><a href="#">Specs</a><a href="#">App</a><a href="#">Support</a><a href="#">Press</a>
+    </div>
+    <p>&copy; 2026 TRAQUA. Drink Smarter. Live Better.</p>
+</footer>
+
+<script>
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold:0.15 });
+    document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+    document.querySelectorAll('.nav-links a').forEach(a => {
+        a.addEventListener('click', e => { e.preventDefault(); document.querySelector(a.getAttribute('href'))?.scrollIntoView({behavior:'smooth'}); });
+    });
+</script>
+</body>
+</html>
